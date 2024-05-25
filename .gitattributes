@@ -1,0 +1,7 @@
+# Ensure all text files use LF
+* text=auto
+
+# Ensure specific files use CRLF
+*.ps1 text eol=crlf
+
+venv/* binary
