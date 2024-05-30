@@ -5,8 +5,15 @@ Thumbs.db
 # Ignore log files
 *.log
 
+
 # Ignore temporary files
 *.tmp
+/logs
+/data
+/raw_data
+
+# Ignore Environment Variables
+.env
 
 # Ignore node_modules directory
 node_modules/
@@ -17,3 +24,6 @@ __pycache__/
 
 # Ignore virtual environment directories
 venv/
+
+# Ignore Python test scripts
+tests.py
