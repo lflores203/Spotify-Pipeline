@@ -1,6 +1,6 @@
 import requests
 import time
-from .config import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, logger
+from spotify.config import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, logger
 
 def get_spotify_token():
     auth_url = 'https://accounts.spotify.com/api/token'

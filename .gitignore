@@ -5,6 +5,8 @@ Thumbs.db
 # Ignore log files
 *.log
 
+# Ignore test folder
+/test
 
 # Ignore temporary files
 *.tmp

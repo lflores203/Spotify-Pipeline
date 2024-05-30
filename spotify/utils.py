@@ -1,7 +1,7 @@
 import json
 import os
 import csv
-from .config import logger
+from spotify.config import logger
 
 def save_to_json(data, file_path):
     file_path = get_unique_file_path(file_path, '.json')

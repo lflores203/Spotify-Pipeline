@@ -5,8 +5,9 @@ from spotify.data_processing import (
     gather_song_details,
     gather_audio_features
 )
-from spotify.utils import save_to_json, create_directory, json_to_csv, upload_file_to_s3
-from spotify.config import logger, AWS_S3_BUCKET_NAME
+from spotify.utils import save_to_json, create_directory, json_to_csv
+from aws.s3 import create_bucket, upload_directory_to_s3
+from spotify.config import logger, AWS_S3_BUCKET_NAME, AWS_S3_REGION_NAME
 
 def main():
     token = get_spotify_token()
@@ -14,8 +15,7 @@ def main():
 
     # List of playlist names
     playlist_names = [
-        "Today's Top Hits",
-        "RapCaviar"
+        "Today's Top Hits"
     ]
     
     all_tracks = []
@@ -50,11 +50,10 @@ def main():
         'related_artists': all_related_artists,
     }
 
-    # Save data to JSON files, convert to CSV, and upload to S3
+    # Save data to JSON files, convert to CSV
     for file_name, data in file_data_mapping.items():
         json_file_path = f'raw_json_data/{file_name}.json'
         csv_file_path = f'raw_csv_data/{file_name}.csv'
-        s3_key = f'json/{file_name}.json'
 
         logger.info(f"Saving data to {json_file_path}")
         save_to_json(data, json_file_path)
@@ -62,8 +61,9 @@ def main():
         logger.info(f"Converting {json_file_path} to {csv_file_path}")
         json_to_csv(json_file_path, csv_file_path)
 
-        logger.info(f"Uploading {json_file_path} to S3 bucket {AWS_S3_BUCKET_NAME}")
-        upload_file_to_s3(json_file_path, AWS_S3_BUCKET_NAME, s3_key)
+    # Create S3 bucket and upload raw_json_data directory
+    create_bucket(AWS_S3_BUCKET_NAME, AWS_S3_REGION_NAME)
+    upload_directory_to_s3('raw_json_data', AWS_S3_BUCKET_NAME, 'raw_json_data')
 
     logger.info("Data extraction, conversion, and upload completed.")
 

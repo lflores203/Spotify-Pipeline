@@ -1,4 +1,4 @@
-from .spotify_api import (
+from spotify.spotify_api import (
     get_playlist_id_by_name,
     get_playlist_tracks,
     get_artist_data,
@@ -7,7 +7,7 @@ from .spotify_api import (
     get_audio_features,
     get_tracks_data
 )
-from .config import logger
+from spotify.config import logger
 
 def process_playlist(playlist_name, headers, all_tracks, all_artist_ids, all_track_ids):
     try:
@@ -37,7 +37,7 @@ def process_playlist(playlist_name, headers, all_tracks, all_artist_ids, all_tra
     
     all_tracks.extend(tracks)
 
-def gather_artist_details(all_artist_ids, headers, all_artists, all_top_tracks, all_related_artists):
+def gather_artist_details(all_artist_ids, headers, all_artists, all_top_tracks, all_related_artists, all_top_track_ids):
     logger.info("Fetching artist details...")
     for artist_id in all_artist_ids:
         artist_data = get_artist_data(artist_id, headers)
@@ -45,6 +45,9 @@ def gather_artist_details(all_artist_ids, headers, all_artists, all_top_tracks, 
 
         top_tracks = get_top_tracks(artist_id, headers)
         all_top_tracks[artist_id] = top_tracks
+
+        for track in top_tracks:
+            all_top_track_ids.append(track['id'])
 
         related_artists = get_related_artists(artist_id, headers)
         all_related_artists[artist_id] = related_artists
